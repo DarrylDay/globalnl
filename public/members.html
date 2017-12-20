@@ -174,25 +174,34 @@ $(document).ready( function () {
 
       var members = "";
       var first_key = "";
+      var objArray = [];
 
       Object.keys(obj).forEach(function(key) {
         if (key != "dummy") {
-
-          if (first_key == "") {
-            first_key = key;
-          }
-          members = members + '<div id=\'' + key + '\'>';
-          members = members + '<a class="list-group-item" onclick="toggleInfoWindow(\'' + key + '\');" href="#">';
-          members = members + '<h4 class="list-group-item-heading">' + obj[key]["first_name"] + ' ' + obj[key]["last_name"] + '</h4>';
-          members = members + '<p class="list-group-item-text">'+ getLocationString(obj[key]["current_address"]) + '</p></a>';
-          members = members + '</div>';
-
-          search_obj[key] = obj[key]["first_name"] + ' ' + obj[key]["last_name"] + ', ' + getLocationString(obj[key]["current_address"]);
+          obj[key]["public_uid"] = key;
+          objArray.push(obj[key]);
         }
       });
 
+      objArray.sort(function(a, b) {
+          var textA = a["first_name"].toUpperCase();
+          var textB = b["first_name"].toUpperCase();
+          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+
+      for (var i = 0; i < objArray.length; i++) {
+
+        members = members + '<div id=\'' + objArray[i]["public_uid"] + '\'>';
+        members = members + '<a class="list-group-item" onclick="toggleInfoWindow(\'' + objArray[i]["public_uid"] + '\');" href="#">';
+        members = members + '<h4 class="list-group-item-heading">' + objArray[i]["first_name"] + ' ' + objArray[i]["last_name"] + '</h4>';
+        members = members + '<p class="list-group-item-text">'+ getLocationString(objArray[i]["current_address"]) + '</p></a>';
+        members = members + '</div>';
+
+        search_obj[objArray[i]["public_uid"]] = objArray[i]["first_name"] + ' ' + objArray[i]["last_name"] + ', ' + getLocationString(objArray[i]["current_address"]);
+      }
+
       $( ".members-list" ).append( members );
-      setInfoWindowData(first_key);
+      setInfoWindowData(objArray[0]["public_uid"]);
 
     }, function(error) {
       console.log(error);

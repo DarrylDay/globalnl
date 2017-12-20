@@ -15,7 +15,7 @@
 
 <div class="container">
 
-<form class="well form-horizontal" id="register_form">
+<form class="well form-horizontal" onsubmit="return fieldsEntered();" id="register_form">
 <fieldset>
 
 <!-- Form Name -->
@@ -224,7 +224,7 @@
 <div class="form-group">
 <label class="col-md-4 control-label"></label>
 <div class="col-md-4">
-<button type="submit" class="btn btn-warning" onclick="return register();">SUBMIT <span class="glyphicon glyphicon-send"></span></button>
+<input type="submit" class="btn btn-warning"></input>
 </div>
 </div>
 
@@ -330,9 +330,15 @@ function changeSector() {
   }
 }
 
+function fieldsEntered() {
+  register();
+  return false;
+}
+
 function register() {
 
   var errors = false;
+  $('#submit_handle').click();
 
   if (member["current_address"]["lat"] == 500) {
     alert("Error getting current address, please do not use auto fill form and enter address in manually using Google Places Autocomplete.");
@@ -348,11 +354,11 @@ function register() {
   member["last_name"] = $( "#last_name" ).val();
   member["email"] = $( "#email" ).val();
 
-  member["linkedin_profile"] = $( "#linkedin_profile" ).val();
-  if ($( "#linkedin_profile" ).val().includes("https://www.linkedin.com/in/") || $( "#linkedin_profile" ).val().includes("http://www.linkedin.com/in/")) {
+  member["linkedin_profile"] = $( "#linkedin_profile" ).val().toLowerCase();
+  if ($( "#linkedin_profile" ).val().includes("linkedin.com/in/")) {
     // good
   } else {
-    alert("Error: Invalid LinkedIn Profile Entered.");
+    alert("Error: Invalid LinkedIn Profile Entered. Please make sure your LinkedIn Profile cotains \"linkedin.com/in/\"");
     errors = true;
   }
 
