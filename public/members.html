@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Global NL - Members</title>
+
+  <link rel="stylesheet" type="text/css" href="/assets/datatables.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://use.fontawesome.com/b58b304000.js"></script>
+
+  <!-- Bootcards CSS files for desktop, iOS and Android -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.2/css/bootcards-desktop.min.css" rel="stylesheet">
+
+</head>
+
+<script src="https://platform.linkedin.com/in.js" type="text/javascript"></script>
+
+<body>
+
+  <div class="container bootcards-container push-right">
+
+    <div class="row">
+
+      <!-- left list column -->
+      <div class="col-sm-5 bootcards-list" id="list" data-title="Contacts">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="search-form">
+
+              <div class="row hidden-xs hidden-sm">
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="text" onKeyDown='if(event.keyCode==13) filterMembers("member_search");' id="member_search" class="form-control" placeholder="Search Name or Location...">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-primary" onclick='unfilterMembers("member_search");'>
+                    <span class="glyphicon glyphicon-refresh"></span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="hidden-md hidden-lg hidden-xl">
+
+                <div class="form-group">
+                  <input type="text" onKeyDown='if(event.keyCode==13) filterMembers("member_search_mobile");' id="member_search_mobile" class="form-control" placeholder="Search Name or Location...">
+                  <i class="fa fa-search"></i>
+                  <br>
+                </div>
+
+                <div class="form-group">
+                  <button type="button" class="btn btn-success form-control" onclick='filterMembers("member_search_mobile");'>
+                    <span class="fa fa-search"></span> Search
+                  </button>
+                  <br></br>
+                </div>
+
+                <div class="form-group">
+                  <button type="button" class="btn btn-primary form-control" onclick='unfilterMembers("member_search_mobile");'>
+                    <span class="glyphicon glyphicon-refresh"></span> Refresh
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          </div><!--panel body-->
+
+          <div class="list-group">
+
+            <!-- memebrs list -->
+            <div class="members-list"  id="members-list">
+
+            </div>
+
+          </div><!--list-group-->
+
+          <div class="panel-footer">
+            <small class="pull-left">Global NL</small>
+          </div>
+        </div><!--panel-->
+
+        </div><!--list-->
+
+        <!--list details column-->
+        <div class="col-sm-7 bootcards-cards">
+
+          <!--contact details -->
+          <div id="contactCard">
+
+            <div class="panel panel-default">
+              <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left">Member Details</h3>
+                <a class="btn btn-default pull-right hidden-sm hidden-md hidden-lg hidden-xl" onclick='toggleInfoWindow("null");' href="#">
+                  <i class="fa fa-arrow-left"></i>
+                  Return
+                </a>
+              </div>
+              <div class="list-group">
+                <div class="list-group-item">
+                  <label>Name</label>
+                  <h4 id="member_name" class="list-group-item-heading"></h4>
+                </div>
+
+                <div class="list-group-item">
+                  <label>Current Location</label>
+                  <h4 id="member_current_location" class="list-group-item-heading"></h4>
+                </div>
+
+                <div class="list-group-item">
+                  <label>Hometown</label>
+                  <h4 id="member_hometown" class="list-group-item-heading"></h4>
+                </div>
+
+                <div class="list-group-item">
+                  <label>Industry</label>
+                  <h4 id="member_industry" class="list-group-item-heading"></h4>
+                </div>
+
+                <div class="list-group-item">
+                  <label>LinkedIn Profile</label>
+                  <div align="center" id="linkedin_profile"></div>
+                </div>
+
+                <div class="list-group-item">
+                  <label>Ambassador</label>
+                  <h4 id="member_ambassador" class="list-group-item-heading"></h4>
+                </div>
+
+              </div>
+
+              <div class="panel-footer">
+                <small class="pull-left">Global NL</small>
+              </div>
+
+            </div><!--contact card-->
+
+        </div><!--list-details-->
+
+    </div><!--row-->
+
+
+  </div><!--container-->
+
+<script type="text/javascript" src="/assets/datatables.min.js"></script>
+<script src="/assets/bootcards-1.1.2/js/bootcards.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script src="/assets/firebase.js"></script>
+
+<script type="text/javascript">
+
+var rootRef = firebase.database().ref();
+var obj;
+var search_obj = {};
+
+$(document).ready( function () {
+
+  /*
+  $("#member_search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#members-list *").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+  */
+
+  // Load database
+  rootRef.child("public/members").once('value', function(snapshot) {
+      obj = snapshot.val();
+
+      var members = "";
+      var first_key = "";
+
+      Object.keys(obj).forEach(function(key) {
+        if (key != "dummy") {
+
+          if (first_key == "") {
+            first_key = key;
+          }
+          members = members + '<div id=\'' + key + '\'>';
+          members = members + '<a class="list-group-item" onclick="toggleInfoWindow(\'' + key + '\');" href="#">';
+          members = members + '<h4 class="list-group-item-heading">' + obj[key]["first_name"] + ' ' + obj[key]["last_name"] + '</h4>';
+          members = members + '<p class="list-group-item-text">'+ getLocationString(obj[key]["current_address"]) + '</p></a>';
+          members = members + '</div>';
+
+          search_obj[key] = obj[key]["first_name"] + ' ' + obj[key]["last_name"] + ', ' + getLocationString(obj[key]["current_address"]);
+        }
+      });
+
+      $( ".members-list" ).append( members );
+      setInfoWindowData(first_key);
+
+    }, function(error) {
+      console.log(error);
+  });
+
+});
+
+function toggleInfoWindow(key) {
+  if ($(window).width() <= 767) {
+    if ($("#contactCard").is(":visible")) {
+      $("#list").show();
+      $("#contactCard").hide();
+    } else {
+      $("#contactCard").show();
+      $("#list").hide();
+    }
+  }
+
+  if(key != "null") {
+    setInfoWindowData(key);
+  }
+
+}
+
+function setInfoWindowData(key) {
+
+  var name = obj[key]["first_name"] + ' ' + obj[key]["last_name"];
+  $("#member_name").html(name);
+  $("#member_industry").html(obj[key]["industry"]);
+
+  $("#member_current_location").html(getLocationString(obj[key]["current_address"]));
+  $("#member_hometown").html(getLocationString(obj[key]["hometown_address"]));
+
+  if ($(window).width() <= 400) {
+    document.getElementById('linkedin_profile').innerHTML = '<a href="' + obj[key]["linkedin_profile"] + '">' + obj[key]["linkedin_profile"] + '<\/a>';
+  } else {
+    document.getElementById('linkedin_profile').innerHTML = '<script type="IN/MemberProfile" data-id="' + obj[key]["linkedin_profile"] + '" data-format="inline" data-related="false"><\/script>';
+  }
+
+  $("#member_ambassador").html(obj[key]["ambassador"]);
+  IN.parse(document.getElementById("linkedin_profile"));
+
+}
+
+window.onload = function(event) {
+  checkWindowWidth();
+};
+
+function checkWindowWidth() {
+  if ($(window).width() <= 767) {
+    $("#list").show();
+    $("#contactCard").hide();
+  } else {
+    $("#list").show();
+    $("#contactCard").show();
+  }
+}
+
+function filterMembers(input_id) {
+  var input = $("#" + input_id).val().toLowerCase();
+
+  Object.keys(search_obj).forEach(function(key) {
+    if (search_obj[key].toLowerCase().indexOf(input) == -1) {
+      $("#" + key).hide();
+    } else {
+      $("#" + key).show();
+    }
+  });
+
+}
+
+function unfilterMembers(input_id) {
+  Object.keys(search_obj).forEach(function(key) {
+    $("#" + key).show();
+  });
+  $("#" + input_id).val("");
+}
+
+// Get Location String
+function getLocationString(obj) {
+  var loc = "";
+  if("locality" in obj && obj["locality"] != "") {
+    loc = obj["locality"];
+  }
+  if ("administrative_area_level_1" in obj && obj["administrative_area_level_1"] != "") {
+    if (loc != "") {
+      loc = loc + ", " + obj["administrative_area_level_1"];
+    } else {
+      loc = obj["administrative_area_level_1"];
+    }
+  }
+  if ("country" in obj && obj["country"] != "") {
+    if (loc != "") {
+      loc = loc + ", " + obj["country"];
+    } else {
+      loc = obj["country"];
+    }
+  }
+  return loc;
+}
+
+bootcards.init( {
+  offCanvasBackdrop : true,
+  offCanvasHideOnMainClick : true,
+  enableTabletPortraitMode : true,
+  disableRubberBanding : true,
+  disableBreakoutSelector : 'a.no-break-out'
+});
+
+</script>
+
+</body>
+</html>

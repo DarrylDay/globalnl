@@ -1,0 +1,32 @@
+[debug] [2017-12-20T04:43:20.787Z] ----------------------------------------------------------------------
+[debug] [2017-12-20T04:43:20.789Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Derail\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2017-12-20T04:43:20.789Z] CLI Version:   3.16.0
+[debug] [2017-12-20T04:43:20.789Z] Platform:      win32
+[debug] [2017-12-20T04:43:20.789Z] Node Version:  v8.4.0
+[debug] [2017-12-20T04:43:20.790Z] Time:          Wed Dec 20 2017 01:13:20 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-20T04:43:20.790Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-12-20T04:43:20.797Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-12-20T04:43:20.798Z] > authorizing via signed-in user
+[debug] [2017-12-20T04:43:20.799Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/globalnl-database  
+  
+ Wed Dec 20 2017 01:13:20 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-20T04:43:21.347Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-20T04:43:21.348Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/globalnl-database/tokens  
+  
+ Wed Dec 20 2017 01:13:21 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-20T04:43:21.919Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'D:\Google Drive Mun\Website\Global NL - Database - Development\Website'...
+[info] 
+[debug] [2017-12-20T04:43:21.921Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/globalnl-database  
+  
+ Wed Dec 20 2017 01:13:21 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-20T04:43:22.504Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-20T04:43:22.504Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/331545031788/clients/_:getWebAppConfig  
+  
+ Wed Dec 20 2017 01:13:22 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-20T04:43:23.064Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
+

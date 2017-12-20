@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Global NL - Registration</title>
+
+    <link rel="stylesheet" type="text/css" href="assets/datatables.min.css"/>
+
+  </head>
+
+<script type="text/javascript" src="assets/datatables.min.js"></script>
+
+<!-- Init Firebase -->
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script src="/assets/firebase.js"></script>
+<script src="https://use.fontawesome.com/b58b304000.js"></script>
+
+<script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+<script type="text/javascript">
+  // FirebaseUI config.
+  var uiConfig = {
+    signInSuccessUrl: 'registration.html',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    // Terms of service url.
+    tosUrl: '<your-tos-url>'
+  };
+
+  // Initialize the FirebaseUI Widget using Firebase.
+  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+  // The start method will wait until the DOM is loaded.
+  ui.start('#firebaseui-auth-container', uiConfig);
+</script>
+
+<div></div>
+<body>
+  <br></br>
+  <div class="container well">
+    <legend>Global NL - Registration</legend>
+    <p>To register either:</p>
+    <ul>
+      <li>Sign into an existing Gooogle Account to link as your account login.</li>
+      <!--<li>Sign into an existing Facebook Account to link as your account login.</li>-->
+      <li>Sign up by creating an account using any personal email address and password.</li>
+    </ul>
+    <p><a href="https://www.globalnl.com">Back to globalnl.com</a></p>
+    <div id="firebaseui-auth-container"></div>
+    <div class="col-sm-12" align="right">
+      <p>© 2017 Global NL</p>
+    </div>
+  </div>
+</body>
+
+</html>

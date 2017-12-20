@@ -1,0 +1,15 @@
+Future Stuff:
+- Pictures
+- Company website link
+- filter markers
+- help menu
+- fb login
+
+- email confirmation (change to contact @ globalnl if we upgrade)
+- tos
+- privacy policy
+- member page page blocks
+- members only members page
+- add linkedin login
+
+- members map
