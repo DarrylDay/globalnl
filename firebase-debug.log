@@ -1,0 +1,41 @@
+[debug] [2017-12-23T02:14:27.441Z] ----------------------------------------------------------------------
+[debug] [2017-12-23T02:14:27.443Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Derail\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2017-12-23T02:14:27.443Z] CLI Version:   3.16.0
+[debug] [2017-12-23T02:14:27.443Z] Platform:      win32
+[debug] [2017-12-23T02:14:27.443Z] Node Version:  v8.4.0
+[debug] [2017-12-23T02:14:27.443Z] Time:          Fri Dec 22 2017 22:44:27 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-23T02:14:27.443Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-12-23T02:14:27.458Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-12-23T02:14:27.458Z] > authorizing via signed-in user
+[debug] [2017-12-23T02:14:27.459Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-12-23T02:14:27.459Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/w1LBb2fRgF6y_Kabz5SDOI24zww-yp6_n2o9QqUJaO8',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri Dec 22 2017 22:44:27 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-23T02:14:27.853Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-23T02:14:27.860Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/globalnl-database  
+  
+ Fri Dec 22 2017 22:44:27 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-23T02:14:28.703Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-23T02:14:28.703Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/globalnl-database/tokens  
+  
+ Fri Dec 22 2017 22:44:28 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-23T02:14:29.177Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'D:\GitHub\globalnl'...
+[info] 
+[debug] [2017-12-23T02:14:29.180Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/globalnl-database  
+  
+ Fri Dec 22 2017 22:44:29 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-23T02:14:29.848Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-23T02:14:29.849Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/331545031788/clients/_:getWebAppConfig  
+  
+ Fri Dec 22 2017 22:44:29 GMT-0330 (Newfoundland Standard Time)
+[debug] [2017-12-23T02:14:30.426Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
+
