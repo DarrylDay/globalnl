@@ -213,7 +213,7 @@ $(document).ready( function () {
         }
       });
 
-      total_pages = Math.floor(objArray.length / members_per_page);
+      total_pages = Math.ceil(objArray.length / members_per_page);
 
       objArray.sort(function(a, b) {
           var textA = a["first_name"].toUpperCase();
