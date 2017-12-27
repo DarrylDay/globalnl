@@ -355,6 +355,10 @@ function filterMembers(input_id) {
     search_page_members.push(searchMemberArray);
   }
 
+  for (var i = 0; i < objArray.length; i++) {
+    $("#" + objArray[i]["public_uid"]).hide();
+  }
+
   search_pages = search_page_members.length;
   makePageNav(search_pages, search_page_members);
 

@@ -17,9 +17,8 @@ var gmap_default_lat = 0;
 var gmap_default_lng = 0;
 var gmap_default_zoom = 1;
 
-var members_private_table_headers = ["Name", "Email", "Current Address",
-  "Hometown Address", "Industry", "Status", "Privacy", "Approved",
-  "Private UID", "Public UID"];
+var members_private_table_headers = ["Name", "Email", "Approved", "Privacy", "Current Address",
+  "Hometown Address", "LinkedIn Profile", "Industry", "Status", "Private UID", "Public UID", "Comments"];
 
 var members_public_table_headers = ["Name", "LinkedIn Profile", "Current Address",
   "Hometown Address", "Industry", "Status", "Public UID"];
@@ -70,11 +69,19 @@ function parseDatabase() {
       var curr_loc = getLocationString(mem["current_address"]);
       var hometown = getLocationString(mem["hometown_address"]);
       var public_uid = "null";
+      var linkedin_profile = "null";
+      var comments = "null";
+      if("linkedin_profile" in mem) {
+        linkedin_profile = mem["linkedin_profile"];
+      }
+      if("comments" in mem) {
+        comments = mem["comments"];
+      }
       if("public_uid" in mem) {
         public_uid = mem["public_uid"];
       }
-      members_private_table_data.push([name, mem["email"], curr_loc, hometown,
-        mem["industry"], mem["status"], mem["privacy"], mem["approved"], key, public_uid]);
+      members_private_table_data.push([name, mem["email"], mem["approved"], mem["privacy"], curr_loc, hometown, linkedin_profile,
+        mem["industry"], mem["status"], key, public_uid, comments]);
     }
   });
 

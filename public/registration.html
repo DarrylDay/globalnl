@@ -425,7 +425,7 @@ function register() {
 
     rootRef.child('private/members/' + uid).set(member, function(error) {
       if(error == null) {
-        alert('Registration Successfully!');
+        alert('Registration Successful!');
         window.location.href = "https://www.globalnl.com";
       } else {
         alert(error);
