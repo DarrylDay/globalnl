@@ -242,8 +242,8 @@
 <!-- Include Javascript Libraries -->
 <script type="text/javascript" src="assets/datatables.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
-<script src="/assets/firebase.js"></script>
-<script src="/assets/member-auth.js"></script>
+<script src="/assets/Firebase/firebase.js"></script>
+<script src="/assets/Firebase/auth-registration.js"></script>
 
 <!-- Javascript Code -->
 <script>
@@ -425,7 +425,7 @@ function register() {
 
     rootRef.child('private/members/' + uid).set(member, function(error) {
       if(error == null) {
-        alert('Registration Successfully!');
+        alert('Registration Successful!');
         window.location.href = "https://www.globalnl.com";
       } else {
         alert(error);
