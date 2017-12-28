@@ -27,7 +27,6 @@ function initApp() {
         }, null, '  ');
 
         try {
-
           // Desktop
           var code = '<li class="dropdown">' +
                         '<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span>   ' +
@@ -38,7 +37,8 @@ function initApp() {
                           '<li><a href="#">Edit Profile</a></li>' +
                           '<li><a href="#" onclick="logout()">Logout</a></li>' +
                         '</ul>' +
-                      '</li>';
+                      '</li>' +
+                      '<li><a href="https://www.globalnl.com/"><i class="fa fa-home"></i> GlobalNL.com</a></li>';
 
           document.getElementById('login_name').innerHTML = code;
 
@@ -50,14 +50,56 @@ function initApp() {
           console.log(e);
         }
 
+        rootRef.child("private/members/" + uid).once('value', function(snapshot) {
+          obj = snapshot.val();
+
+          if (obj == null) {
+            // Member never filled out registration form
+            if (confirm("Account not fully registered, continue to registration form? If not you access will be limited.")) {
+              window.location.href = "registration.html";
+            } else {
+              publicVersion();
+            }
+          } else {
+            if (obj["approved"] == "Yes") {
+              rootRef.child("shared/members").once('value', function(snapshot) {
+
+                obj = snapshot.val();
+                loadMembers(obj);
+                $("#login_note").hide();
+                document.getElementById("dir_version").innerHTML = "Membership Directory";
+
+              }, function(error) {
+                alert(error);
+              });
+            } else {
+              alert("Your account is registered but is awaiting approval from a moderator. Your account access will be limited.");
+              publicVersion();
+            }
+          }
+
+        }, function(error) {
+          console.log(error);
+        });
+
       });
     } else {
 
-
+      // Not signed in
+      publicVersion();
 
     }
   }, function(error) {
     console.log(error);
+  });
+}
+
+function publicVersion() {
+  rootRef.child("public/members").once('value', function(snapshot) {
+    obj = snapshot.val();
+    loadMembers(obj);
+  }, function(error) {
+    alert(error);
   });
 }
 

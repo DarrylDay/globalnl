@@ -38,7 +38,7 @@
         <i class="fa fa-lg fa-bars"></i><span>Menu</span>
       </button>
 
-      <a class="navbar-brand" title="Global NL" href="https://globalnl.com">Global NL</a>
+      <a class="navbar-brand" title="Global NL Members (Beta)" href="/members.html">Global NL Members (Beta)</a>
 
       <!--navbar menu options: shown on desktop only -->
       <div class="navbar-collapse collapse">
@@ -61,6 +61,7 @@
         </ul>
         <ul id="login_name" class="nav navbar-nav navbar-right">
           <li><a href="index.html"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+          <li><a href="https://www.globalnl.com/"><i class="fa fa-home"></i> GlobalNL.com</a></li>
         </ul>
       </div>
     </div>
@@ -82,6 +83,11 @@
       <li>
         <a class="btn disabled pull-left" href="#">
           <i class="fa fa-graduation-cap"></i> Student Jop Map
+        </a>
+      </li>
+      <li>
+        <a class="pull-left" href="https://www.globalnl.com/">
+          <i class="fa fa-home"></i> GlobalNL.com
         </a>
       </li>
       <li id="login_name_mobile" class="pull-left">
@@ -116,32 +122,35 @@
           <div class="panel-body">
             <div class="search-form">
 
-                <div class="form-group">
-                  <input type="text" onKeyDown='if(event.keyCode==13) filterMembers("member_search");' id="member_search" class="form-control" placeholder="Search Name, Location or Industry...">
-                  <i class="fa fa-search"></i>
-                  <br>
-                </div>
-
-                <div class="form-group">
-                  <button type="button" class="btn btn-success form-control" onclick='filterMembers("member_search");'>
-                    <span class="fa fa-search"></span> Search
-                  </button>
-                  <br></br>
-                </div>
-
-                <div class="form-group">
-                  <button type="button" class="btn btn-primary form-control" onclick='unfilterMembers("member_search");'>
-                    <span class="glyphicon glyphicon-refresh"></span> Refresh
-                  </button>
-                </div>
-
               <div class="row">
                 <div class="form-group">
                   <div class="text-center">
-                    <div class="col-xs-12"><br><p id="count">Public Member Count: </p></div>
+                    <div class="col-xs-12"><b><h3 id="dir_version">Public Membership Directory</h3></b></div>
+                    <div class="col-xs-12"><small id="login_note">Login to a Verified Account to Access the Full Membership Directory</small></div>
+                    <div class="col-xs-12"><small id="count">Membership Count: </small><hr size="5"></div>
                   </div>
                 </div>
               </div>
+
+              <div class="form-group">
+                <input type="text" onKeyDown='if(event.keyCode==13) filterMembers("member_search");' id="member_search" class="form-control" placeholder="Search Name, Location or Industry...">
+                <i class="fa fa-search"></i>
+                <br>
+              </div>
+
+              <div class="form-group">
+                <button type="button" class="btn btn-success form-control" onclick='filterMembers("member_search");'>
+                  <span class="fa fa-search"></span> Search
+                </button>
+                <br></br>
+              </div>
+
+              <div class="form-group">
+                <button type="button" class="btn btn-primary form-control" onclick='unfilterMembers("member_search");'>
+                  <span class="glyphicon glyphicon-refresh"></span> Refresh
+                </button>
+              </div>
+              <br>
 
             </div>
           </div><!--panel body-->
@@ -236,7 +245,7 @@
 <script src="/assets/Bootcards-1.1.2/js/bootcards.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 <script src="/assets/Firebase/firebase.js"></script>
-<script src="/assets/Firebase/auth-member.js"></script>
+<script src="/assets/Firebase/members.js"></script>
 
 <script type="text/javascript">
 
@@ -271,6 +280,10 @@ $(document).ready( function () {
   });
   */
 
+});
+
+function loadMembers(obj) {
+
   if ($(window).width() >= 1024) {
     first_string = 'First';
     last_string = 'Last';
@@ -281,72 +294,64 @@ $(document).ready( function () {
     members_per_page = 20;
   }
 
-  // Load database
-  rootRef.child("public/members").once('value', function(snapshot) {
-      obj = snapshot.val();
+  var members = "";
+  var first_key = "";
 
-      var members = "";
-      var first_key = "";
-
-      Object.keys(obj).forEach(function(key) {
-        if (key != "dummy") {
-          obj[key]["public_uid"] = key;
-          objArray.push(obj[key]);
-        }
-      });
-
-      total_pages = Math.ceil(objArray.length / members_per_page);
-
-      objArray.sort(function(a, b) {
-          var textA = a["first_name"].toUpperCase();
-          var textB = b["first_name"].toUpperCase();
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-      });
-
-      var k = 0;
-      var pageArray = [];
-
-      for (var i = 0; i < objArray.length; i++) {
-
-        members = members + '<div id=\'' + objArray[i]["public_uid"] + '\'>';
-        members = members + '<a class="list-group-item" onclick="toggleInfoWindow(\'' + objArray[i]["public_uid"] + '\');" href="#">';
-        members = members + '<h4 class="list-group-item-heading">' + objArray[i]["first_name"] + ' ' + objArray[i]["last_name"] + '</h4>';
-        members = members + '<p class="list-group-item-text">'+ getLocationString(objArray[i]["current_address"]) + '</p></a>';
-        members = members + '</div>';
-
-        search_obj[objArray[i]["public_uid"]] = objArray[i]["first_name"] + ' ' + objArray[i]["last_name"] + ' ' + getLocationString(objArray[i]["current_address"]) +
-          ' ' + getLocationString(objArray[i]["hometown_address"]) + ' ' + objArray[i]["industry"];
-
-        pageArray.push(objArray[i]["public_uid"]);
-        k = k + 1;
-        if (k >= members_per_page) {
-          page_members.push(pageArray);
-          k = 0;
-          pageArray = [];
-        }
-
-      }
-
-      if (k != 0) {
-        page_members.push(pageArray);
-      }
-
-      $( ".members-list" ).append( members );
-      for (var i = 10; i < objArray.length; i++) {
-        $("#" + objArray[i]["public_uid"]).hide();
-      }
-
-      setInfoWindowData(objArray[0]["public_uid"]);
-
-      document.getElementById("count").innerHTML = "Public Member Count: " + objArray.length;
-
-      makePageNav(total_pages, page_members);
-
-    }, function(error) {
-      console.log(error);
+  Object.keys(obj).forEach(function(key) {
+    if (key != "dummy") {
+      obj[key]["public_uid"] = key;
+      objArray.push(obj[key]);
+    }
   });
 
-});
+  total_pages = Math.ceil(objArray.length / members_per_page);
+
+  objArray.sort(function(a, b) {
+      var textA = a["last_name"].toUpperCase();
+      var textB = b["last_name"].toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+  });
+
+  var k = 0;
+  var pageArray = [];
+
+  for (var i = 0; i < objArray.length; i++) {
+
+    members = members + '<div id=\'' + objArray[i]["public_uid"] + '\'>';
+    members = members + '<a class="list-group-item" onclick="toggleInfoWindow(\'' + objArray[i]["public_uid"] + '\');" href="#">';
+    members = members + '<h4 class="list-group-item-heading">' + objArray[i]["first_name"] + ' ' + objArray[i]["last_name"] + '</h4>';
+    members = members + '<p class="list-group-item-text">'+ getLocationString(objArray[i]["current_address"]) + '</p></a>';
+    members = members + '</div>';
+
+    search_obj[objArray[i]["public_uid"]] = objArray[i]["first_name"] + ' ' + objArray[i]["last_name"] + ' ' + getLocationString(objArray[i]["current_address"]) +
+      ' ' + getLocationString(objArray[i]["hometown_address"]) + ' ' + objArray[i]["industry"];
+
+    pageArray.push(objArray[i]["public_uid"]);
+    k = k + 1;
+    if (k >= members_per_page) {
+      page_members.push(pageArray);
+      k = 0;
+      pageArray = [];
+    }
+
+  }
+
+  if (k != 0) {
+    page_members.push(pageArray);
+  }
+
+  $( ".members-list" ).append( members );
+  for (var i = 10; i < objArray.length; i++) {
+    $("#" + objArray[i]["public_uid"]).hide();
+  }
+
+  setInfoWindowData(objArray[0]["public_uid"]);
+
+  document.getElementById("count").innerHTML = "Membership Count: " + objArray.length;
+
+  makePageNav(total_pages, page_members);
+
+}
 
 function makePageNav(pages, members) {
   $('#pagination').twbsPagination('destroy');
