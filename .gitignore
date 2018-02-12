@@ -1,2 +1,4 @@
 
 *.log
+public/assets/.DS_Store
+.DS_Store

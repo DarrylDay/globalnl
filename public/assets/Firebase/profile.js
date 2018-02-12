@@ -58,24 +58,17 @@ function initApp() {
             if (confirm("Account not fully registered, continue to registration form? If not you access will be limited.")) {
               window.location.href = "registration.html";
             } else {
-              publicVersion();
+              //
             }
           } else {
-            if (obj["approved"] == "Yes") {
-              rootRef.child("shared/members").once('value', function(snapshot) {
 
-                obj = snapshot.val();
-                loadMembers(obj);
-                $("#login_note").hide();
-                document.getElementById("dir_version").innerHTML = "Membership Directory";
+            $("#first_name").val(obj["first_name"]);
+            $("#last_name").val(obj["last_name"]);
+            $("#email").val(obj["email"]);
+            $("#linkedin_profile").val(obj["linkedin_profile"]);
+            $("#industry").val(obj["industry"]);
+            $("#status").val(obj["status"]);
 
-              }, function(error) {
-                alert(error);
-              });
-            } else {
-              alert("Your account is registered but is awaiting approval from a moderator. Your account access will be limited.");
-              publicVersion();
-            }
           }
 
         }, function(error) {
@@ -86,20 +79,11 @@ function initApp() {
     } else {
 
       // Not signed in
-      publicVersion();
+      window.location.href = "index.html";
 
     }
   }, function(error) {
     console.log(error);
-  });
-}
-
-function publicVersion() {
-  rootRef.child("public/members").once('value', function(snapshot) {
-    obj = snapshot.val();
-    loadMembers(obj);
-  }, function(error) {
-    alert(error);
   });
 }
 
@@ -109,7 +93,6 @@ window.addEventListener('load', function() {
 });
 
 function profile() {
-  console.log("Nav profile.html");
   window.location.href = "profile.html";
 }
 
